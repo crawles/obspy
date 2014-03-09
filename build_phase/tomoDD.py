@@ -35,6 +35,7 @@ class tomoDD:
         eqlon = dict_item['eqlon']
         eqdep = dict_item['eqdep']
         #iyr,imon,idy,ihr,imn,qsec,qlat,qlon,qdep,qmag,icusp
+        #TODO add TIME and magnitude
         return ['0','0','0','0','0','0',eqlat,eqlon,eqdep,'0',evid]
 
     def flip_polarity(self,sta_name,p):
@@ -52,7 +53,6 @@ class tomoDD:
         for event in event_list:
             evid = event[0][0].stats.file.split('.')[0]
             #bc tomodd chopped off evid (and i added '201' to beginning)
-            evid = evid#[:-2]
             if evid in self.tomoDD_file_dict:
                 header = self.print_event_header(evid)
                 print ' '.join(header)
@@ -73,7 +73,7 @@ class tomoDD:
         #print missing_sta
     def count_num_of_amp_ratio(self,event):
         i = 0
-        evid = event[0][0].stats.file.split('.')[0]#[:-2]
+        evid = event[0][0].stats.file.split('.')[0]
         for station in event:
             sta_name = station[0].stats.station
             if sta_name in self.tomoDD_file_dict[evid]:
@@ -89,7 +89,6 @@ class tomoDD:
             evid = event[0][0].stats.file.split('.')[0]
             #bc tomodd chopped off evid (and i added '201' to beginning)
             orig_evid = evid
-            evid = evid#[:-2]
             if evid in self.tomoDD_file_dict:
                 num_amp = self.count_num_of_amp_ratio(event)
                 print evid,num_amp
