@@ -1,3 +1,5 @@
+modified event names in te_qte6.reloc to folder evid
+
 build_phase.py
     used to build phase and amplitude files for HASH
     always need to make sure polarities are currently corrected flipped ones
@@ -5,7 +7,5 @@ build_phase.py
 need to make sure tomoDD.src (cliff_relocs6.src) matches up with my picked files
     why is there not 1:1 overlap?
 
-feb 27
-when running code. *must append 201*
 ipython build_phase.py bguo4 amp
 ipython build_phase.py bguo4 phase

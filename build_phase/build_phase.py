@@ -31,13 +31,14 @@ for event in os.listdir(alp_events):
         print e
 
 #output PHASE or AMP
-#tomoDD_file = 'feb_27.src' 
-tomoDD_file = 'te2.src' 
-tdd = tomoDD.tomoDD(tomoDD_file)
+tomoDD_src = 'te2.src' 
+tomoDD_reloc = 'te2_qte6_longevid.reloc' 
+tdd_src = tomoDD.tomoDD_src(tomoDD_src,tomoDD_reloc)
+
 if phase_or_amp == 'phase':
-    tdd.build_phase(event_list)
+    tdd_src.build_phase(event_list)
 elif phase_or_amp == 'amp':
-    tdd.build_amp(event_list)
+    tdd_src.build_amp(event_list)
 
 #for event in event_list:
 #    print event[0][0].stats.file.split('.')[0][3:-2]
