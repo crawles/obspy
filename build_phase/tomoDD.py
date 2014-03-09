@@ -2,13 +2,17 @@ import build_phase_lib as phase
 import datetime
 from obspy import UTCDateTime
 
-class tomoDD_src:
-
+class tomoDD:
+    """ tomoDD src and reloc file. """
     def __init__(self,tomoDD_src,tomoDD_reloc_file):
-        self.tomoDD_file_dict = self.read_tomoDD_file(tomoDD_src)
+        self.tomoDD_file_dict = self.read_tomoDD_src(tomoDD_src)
         self.tdd_reloc = tomoDD_reloc(tomoDD_reloc_file)
 
-    def read_tomoDD_file(self,filename):
+    def read_tomoDD_src(self,filename):
+        """ Creates dictionary of sta takeoff,azi,ev-dist,eqloc info
+
+        input:tomoDD.src 
+        """
         tomoDD_f = open(filename,'r')
         event_dict = {}
         sta_dict = {}
@@ -33,14 +37,15 @@ class tomoDD_src:
 
     def print_event_header(self,evid):
         """iyr,imon,idy,ihr,imn,qsec,qlat,qlon,qdep,qmag,icusp"""
-        #lat,lon,dep from .src
+
+        #.src lat,lon,dep from 
         sta = self.tomoDD_file_dict[evid].keys()[0]
         dict_item = self.tomoDD_file_dict[evid][sta]
         eqlat = dict_item['eqlat']
         eqlon = dict_item['eqlon']
         eqdep = dict_item['eqdep']
 
-        #datetime,mag info
+        #.reloc datetime,mag info
         reloc_dict = self.tdd_reloc.all_event_dict[evid]
         yr = reloc_dict[10]
         month = reloc_dict[11]
@@ -53,7 +58,7 @@ class tomoDD_src:
         return [yr,month,day,hr,minute,second,eqlat,eqlon,eqdep,mag,evid]
 
     def flip_polarity(self,sta_name,p):
-        """ flip polarity if neccessary """
+        """ need to flip polarities for some stations """
         #TODO DOUBLE CHECK THIS IS TRUE FOR WIZARD early 2013
         if sta_name in ["COVA","WZ01","WZ02","WZ03","WZ13","WZ14","WZ15","WZ16","WZ17","WZ18","WZ20"]:
             if p == 'D':
@@ -63,6 +68,7 @@ class tomoDD_src:
             return p
 
     def build_phase(self,event_list):
+        """ build one .phase file for all events for input to HASH_cr """
         missing_sta = []
         for event in event_list:
             evid = event[0][0].stats.file.split('.')[0]
@@ -85,7 +91,9 @@ class tomoDD_src:
                             print sta_name,p[0],p[1],td['eq_sta_dist'],int(float(td['takeoff'])),int(float(td['azim']))
                 print 'NEXT','Q',0,0.0,0,0
         #print missing_sta
+
     def count_num_of_amp_ratio(self,event):
+        """ need to cound for .amp file """
         i = 0
         evid = event[0][0].stats.file.split('.')[0]
         for station in event:
@@ -98,6 +106,7 @@ class tomoDD_src:
         return i
 
     def build_amp(self,event_list):
+        """ build one .phase file for all events for input to HASH_cr """
         for event in event_list:
             evid = event[0][0].stats.file.split('.')[0]
             #bc tomodd chopped off evid (and i added '201' to beginning)
