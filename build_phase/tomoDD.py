@@ -105,29 +105,3 @@ class tomoDD:
                             pass
                             #sname,spin,ith,iaz
                             print sta_name,a,int(float(td['takeoff'])),int(float(td['azim']))
-
-    def build_phase(self,event_list):
-        missing_sta = []
-        for event in event_list:
-            evid = event[0][0].stats.file.split('.')[0]
-            #bc tomodd chopped off evid (and i added '201' to beginning)
-            evid = evid#[:-2]
-            print evid
-            if evid in self.tomoDD_file_dict:
-                header = self.print_event_header(evid)
-                print ' '.join(header)
-                for station in event:
-                    sta_name = station[0].stats.station
-                    if sta_name not in self.tomoDD_file_dict[evid]:
-                        missing_sta.append([evid,sta_name])
-                    else:
-                        td = self.tomoDD_file_dict[evid][sta_name]
-                        phase_amp = phase.get_station_phase_and_amp(station)
-                        p = phase_amp[0]
-                        if p[0]:
-                            pass
-                            #sname,pickpol,p_qual,qdist,ith,iaz
-                            p[0] = self.flip_polarity(sta_name,p[0])
-                            print sta_name,p[0],p[1],td['eq_sta_dist'],int(float(td['takeoff'])),int(float(td['azim']))
-                print 'NEXT','Q',0,0.0,0,0
-

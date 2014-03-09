@@ -27,7 +27,6 @@ def get_station_phase_and_amp(station):
     if len(station) > 2 and get_S_amp(station):
         S_amp = get_S_amp(station)
         P_amp = get_P_amp(station)
-        print 'S_amp =',S_amp,'P_amp =',P_amp
         amp = calc_SP_ratio(P_amp,S_amp)
     else:
         amp = None
