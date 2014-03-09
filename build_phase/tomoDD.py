@@ -33,24 +33,24 @@ class tomoDD_src:
 
     def print_event_header(self,evid):
         """iyr,imon,idy,ihr,imn,qsec,qlat,qlon,qdep,qmag,icusp"""
+        #lat,lon,dep from .src
         sta = self.tomoDD_file_dict[evid].keys()[0]
         dict_item = self.tomoDD_file_dict[evid][sta]
         eqlat = dict_item['eqlat']
         eqlon = dict_item['eqlon']
         eqdep = dict_item['eqdep']
 
-        #datetime info
-        reloc_dict = self.tdd_reloc.all_event_dict
-        yr = int(reloc_dict[10])
-        month = int(reloc_dict[11])
-        day = int(line_cols[12])
-        hr = int(line_cols[13])
-        minute = int(line_cols[14])
-        second = line_cols[15].zfill(4)
-        t = UTCDateTime(yr,month,day,hr,minute,int(second[:2]),int(second[2:])*10000) #microseconds
+        #datetime,mag info
+        reloc_dict = self.tdd_reloc.all_event_dict[evid]
+        yr = reloc_dict[10]
+        month = reloc_dict[11]
+        day = reloc_dict[12]
+        hr = reloc_dict[13]
+        minute = reloc_dict[14]
+        second = reloc_dict[15]
+        mag = reloc_dict[16]
 
-        #TODO add TIME and magnitude
-        return ['0','0','0','0','0','0',eqlat,eqlon,eqdep,'0',evid]
+        return [yr,month,day,hr,minute,second,eqlat,eqlon,eqdep,mag,evid]
 
     def flip_polarity(self,sta_name,p):
         """ flip polarity if neccessary """
