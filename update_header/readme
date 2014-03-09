@@ -1,0 +1,9 @@
+from original target1 events, removed the following to create targ1_orig:
+removed 30450338 bc ct_qte6 times didn't match up... and bad quality traces
+removed 30592142
+removed 30630446 bc I think that was the airquke
+removed 2013056110840 bc it couldn't match with ct_qte6
+
+updated data: targ1_cte6
+rotated data: rotate
+    TODO: remove N,E components
