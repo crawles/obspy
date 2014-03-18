@@ -17,18 +17,19 @@ import data_struc as data
 #import classifier
 #import plotting as pp
 
-evid = sys.argv[1]
+#read pick file
+pick_file = sys.argv[1]
+p = picks.Picks(pick_file)
+p.Baillard_2014()
+
 #read raw data
-obs_trace_dir = "data/te2_qte6"
-evid_path = os.path.join(obs_trace_dir,evid)
-obs_set = io_utils.read_sac_dir(evid_path)
+input_sac_directory = sys.argv[2]
+obs_set = io_utils.read_sac_dir(input_sac_directory)
 #obs_set = sw.update_stream_if_has_quality_pick(obs_set)
 #sw.down_sample(obs_set)
 obs = data.Dataset(obs_set) 
-#read pick file
-p = picks.Picks()
-p.add_picks(evid+'.txt',evid)
 
 obs.mark_picks(p)
+obs.write_data_to_subdir('updated_data')
 
 

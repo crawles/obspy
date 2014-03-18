@@ -1,2 +1,38 @@
-March 18
-Commented out make_instance_array in data_struct
+Updates sac header with picks from auto-picker, currently only from Baillard et al., 2014 matlab code
+input: 
+    pick_file
+    input_sac_directory
+output:
+    output_sac_directory
+
+Notes:
+pick_file must be similar to that of Baillard et al., 2014 output.
+    * added event line 
+    * added yr,month,day
+
+2012188120908
+ WZ01  HZ EPg  0   2012  7  6 12  9 25.57
+ WZ01  HZ ESg  1   2012  7  6 12  9 30.64
+    ...
+ FRAN  HZ  IAML    12 9 24.72      13190.78 0.04
+ GORG  HZ  IAML    12 9 31.42      145.05 0.06
+    ... 
+2012190175731
+    ...
+
+input_sac_directory/
+  2012188120908/
+    2012188120908..00.MTFO.SHN
+    ...
+  2012190175731/
+    2012190175731.00.GORG.SHN
+
+output:
+
+output_sac_directory/
+  2012188120908/
+    2012188120908..00.MTFO.SHN
+    ...
+  2012190175731/
+    2012190175731.00.GORG.SHN
+

@@ -12,7 +12,7 @@ def get_relative_time(tr,absolute_time):
     try:
         time_from_beg = absolute_time - tr.stats.starttime
     except:
-        return None
+        return float(-12345)
     time_from_b = time_from_beg + tr.stats.sac.b
     return time_from_b
 

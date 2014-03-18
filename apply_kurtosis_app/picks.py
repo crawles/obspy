@@ -3,16 +3,20 @@ import data_struc as data
 
 class Picks:
 
-    def __init__(self):
+    def __init__(self,pick_file):
+        self.pick_file = pick_file
         self.picks = data.Nodes()
 
-    def Baillard_2014(self,pick_file):
+    def Baillard_2014(self):
         """ input e.g 2012188120908.txt """
-        f = open(pick_file)
+        f = open(self.pick_file)
         sta_picks = data.Nodes()
         for line in f:
             cols = line.split()
-            if cols[2] != 'IAML':
+            print cols
+            if len(cols) == 1: #text input must be
+                evid = cols[0]
+            elif cols[2] != 'IAML':
                 sta = cols[0]
                 sc = cols[-1]
                 sc_split = sc.split('.')
@@ -21,10 +25,6 @@ class Picks:
                 time_cols = [int(x) for x in cols[4:]]
                 yr,mon,dy,hr,minute,sc,ms = time_cols[:]
                 t = UTCDateTime(yr,mon,dy,hr,minute,sc,ms) #microseconds
-                sta_picks[cols[0]][cols[2][1]] = t
-        return sta_picks 
-
-    def add_picks(self,pick_file,evid):
-        """ for evid, add picks """
-        self.picks[evid] = self.Baillard_2014(pick_file)
+                sta_picks[evid][cols[0]][cols[2][1]] = t
+        self.picks = sta_picks 
         

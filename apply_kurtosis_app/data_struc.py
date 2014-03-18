@@ -1,6 +1,7 @@
 import numpy as np
 import swave as sw
 import obspy
+from obspy import *
 import os
 from collections import defaultdict
 import itertools
@@ -74,7 +75,7 @@ class Dataset:
             tr.stats.R = R
     
     def cut_after_S(self,beg,end):
-        """ -beg to cut before S """
+        """ note: -beg to cut before S """
         for tr in self:
             S = tr.stats.sac.t2 - tr.stats.sac.b
             begS = S + beg
@@ -82,7 +83,7 @@ class Dataset:
             sw.trim_after_start_time(tr,begS,endS)
 
     def cut_after_P(self,beg,end):
-        """ -beg to cut before P """
+        """ note: -beg to cut before P """
         for tr in self:
             P = tr.stats.sac.t1 - tr.stats.sac.b
             begP = P + beg
@@ -100,7 +101,10 @@ class Dataset:
 
 
     def mark_picks(self,p):
-        """ p is tree of [evid][sta]['P'] = absolute time """
+        """ Puts pick in SAC header.
+            input: p: a tree of [evid][sta]['P' or 'S'] = absolute time
+            output: t8 (and t9) of SAC header is modified with P (and S if applicable) 
+        """
         for evid in p.picks:
             for trs in sw.pairwise(self):
                 tr,tr1=trs[:]
@@ -112,9 +116,15 @@ class Dataset:
                     tr1.stats.sac.t8,tr1.stats.sac.t9 = p_pick,s_pick #TODO can change from t8,t9
 
     def write_data_to_subdir(self,events_dir):
+        """ input: name of new directory 
+            output: writes directory/subdirectory/xxxx.SAC
+        """
         for tr in self:
-            evid = tr.stats.file.split('.')[0]
-            subdir = os.path.join(events_dir,evid)
-            print subdir
-            #if not os.path.exists(subdir):
-            #    os.makedirs(subdir)
+            if tr.stats.sac.t8 > 0: #if app made an p pick
+                evid = tr.stats.file.split('.')[0]
+                subdir = os.path.join(events_dir,evid)
+                if not os.path.exists(subdir):
+                    os.makedirs(subdir)
+
+                new_file = os.path.join(events_dir,evid,tr.stats.file)
+                tr.write(new_file,format='SAC')
