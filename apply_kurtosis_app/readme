@@ -1,4 +1,7 @@
+add_picks.py
+
 Updates sac header with picks from auto-picker, currently only from Baillard et al., 2014 matlab code
+
 input: 
     pick_file
     input_sac_directory
