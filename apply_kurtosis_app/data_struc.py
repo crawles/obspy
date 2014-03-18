@@ -1,6 +1,7 @@
 import numpy as np
 import swave as sw
 import obspy
+import os
 from collections import defaultdict
 import itertools
 
@@ -99,9 +100,21 @@ class Dataset:
 
 
     def mark_picks(self,p):
+        """ p is tree of [evid][sta]['P'] = absolute time """
         for evid in p.picks:
             for trs in sw.pairwise(self):
                 tr,tr1=trs[:]
                 sta = tr.stats.station
                 if tr.stats.file.startswith(evid) and (sta in p.picks[evid]):
-                    S_pick = sw.get_relative_time(tr,p.picks[evid][sta])
+                    p_pick = sw.get_relative_time(tr,p.picks[evid][sta]['P'])
+                    s_pick = sw.get_relative_time(tr,p.picks[evid][sta]['S'])
+                    tr.stats.sac.t8,tr.stats.sac.t9 = p_pick,s_pick #TODO can change from t8,t9
+                    tr1.stats.sac.t8,tr1.stats.sac.t9 = p_pick,s_pick #TODO can change from t8,t9
+
+    def write_data_to_subdir(self,events_dir):
+        for tr in self:
+            evid = tr.stats.file.split('.')[0]
+            subdir = os.path.join(events_dir,evid)
+            print subdir
+            #if not os.path.exists(subdir):
+            #    os.makedirs(subdir)

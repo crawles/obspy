@@ -29,5 +29,6 @@ obs = data.Dataset(obs_set)
 p = picks.Picks()
 p.add_picks(evid+'.txt',evid)
 
+obs.mark_picks(p)
 
 
