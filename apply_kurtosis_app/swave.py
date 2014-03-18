@@ -8,6 +8,12 @@ from numpy import *
 from itertools import izip
 import time
 
+def get_relative_time(tr,absolute_time):
+    time_from_beg = absolute_time - tr.stats.starttime
+    time_from_b = time_from_beg + tr.stats.sac.b
+    return time_from_b
+
+
 def down_sample(trs):
     """down sample all traces to minimum sampling rate and remove, if neccessary,
     last element of array to make all traces have equal length """

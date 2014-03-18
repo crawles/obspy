@@ -12,8 +12,8 @@ import copy
 import io_utils
 import swave as sw
 import picks 
+import data_struc as data
 #TODO delete these if you don't end up using them
-#import data_struc as data
 #import classifier
 #import plotting as pp
 
@@ -22,10 +22,12 @@ evid = sys.argv[1]
 obs_trace_dir = "data/te2_qte6"
 evid_path = os.path.join(obs_trace_dir,evid)
 obs_set = io_utils.read_sac_dir(evid_path)
-#read pick file
-p = picks.Picks(evid+'.txt')
-
 #obs_set = sw.update_stream_if_has_quality_pick(obs_set)
 #sw.down_sample(obs_set)
+obs = data.Dataset(obs_set) 
+#read pick file
+p = picks.Picks()
+p.add_picks(evid+'.txt',evid)
+
 
 
