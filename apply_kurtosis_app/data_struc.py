@@ -120,11 +120,11 @@ class Dataset:
             output: writes directory/subdirectory/xxxx.SAC
         """
         for tr in self:
-            if tr.stats.sac.t8 > 0: #if app made an p pick
+            if tr.stats.sac.t8 > 0 or tr.stats.sac.t9 > 0: #if app made an p pick
                 evid = tr.stats.file.split('.')[0]
                 subdir = os.path.join(events_dir,evid)
                 if not os.path.exists(subdir):
                     os.makedirs(subdir)
-
+                print tr.stats.station
                 new_file = os.path.join(events_dir,evid,tr.stats.file)
                 tr.write(new_file,format='SAC')

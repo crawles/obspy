@@ -14,7 +14,7 @@ class Picks:
         for line in f:
             cols = line.split()
             print cols
-            if len(cols) == 1: #text input must be
+            if len(cols) == 1: #text input must be evid first
                 evid = cols[0]
             elif cols[2] != 'IAML':
                 sta = cols[0]
